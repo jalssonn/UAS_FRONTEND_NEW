@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="authApp">
+<head>
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5" ng-controller="AuthController">
+        <div class="text-center mb-4" ng-if="isLoggedIn()">
+            <h4>Selamat datang, {{username}}</h4>
+            <button class="btn btn-danger" ng-click="logout()">Logout</button>
+        </div>
+
+        <div class="row justify-content-center" ng-if="!isLoggedIn()">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-danger" ng-if="error">
+                            {{error}}
+                        </div>
+                        <form ng-submit="login()">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" ng-model="user.email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" ng-model="user.password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" ng-disabled="loading">
+                                {{loading ? 'Loading...' : 'Login'}}
+                            </button>
+                        </form>
+                        <p class="text-center mt-3">
+                            Belum punya akun? <a href="register.html">Register</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="auth.js"></script>
+</body>
+</html>

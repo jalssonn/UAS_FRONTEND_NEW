@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="articleApp">
+<head>
+    <title>Hasil Pencarian - WorldExplorer</title>
+    <!-- Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles/search.css">
+</head>
+<body ng-controller="SearchController">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-globe-asia me-2"></i>WorldExplorer
+            </a>
+            <a href="/" class="btn btn-outline-light">
+                <i class="fas fa-arrow-left me-2"></i>Kembali
+            </a>
+        </div>
+    </nav>
+
+    <div class="search-page">
+        <!-- Search Header -->
+        <div class="search-header">
+            <h2>Hasil Pencarian</h2>
+            <div class="search-stats">
+                <div class="search-query">
+                    <i class="fas fa-search"></i>
+                    <span>"{{searchQuery}}"</span>
+                </div>
+                <div class="search-count">
+                    <i class="fas fa-list"></i>
+                    <span>{{articles.length}} hasil ditemukan</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Results Grid -->
+        <div class="results-container">
+            <div class="result-card" ng-repeat="article in articles">
+                <div class="result-image">
+                    <img ng-src="{{article.image}}" alt="{{article.title}}">
+                    <div class="result-category">{{article.category}}</div>
+                </div>
+                <div class="result-content">
+                    <h3 class="result-title">{{article.title}}</h3>
+                    <p class="result-description">{{article.content | limitTo: 150}}...</p>
+                    <div class="result-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> {{article.country}}</span>
+                        <span><i class="fas fa-calendar"></i> {{article.date | date:'dd MMM yyyy'}}</span>
+                    </div>
+                    <a href="article-detail.html?id={{article._id}}" class="read-more">
+                        Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results -->
+        <div ng-if="articles.length === 0" class="no-results">
+            <div class="no-results-content">
+                <i class="fas fa-search fa-3x mb-3"></i>
+                <h3>Tidak ada hasil yang ditemukan</h3>
+                <p>Coba cari dengan kata kunci lain</p>
+                <a href="/" class="btn btn-primary mt-3">
+                    <i class="fas fa-home me-2"></i>Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="searchController.js"></script>
+</body>
+</html>

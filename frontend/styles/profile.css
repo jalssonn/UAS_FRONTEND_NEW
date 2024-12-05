@@ -1,0 +1,51 @@
+.profile-card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    border-radius: 15px;
+}
+
+.profile-card .card-body {
+    padding: 2rem;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+}
+
+.form-control:focus {
+    border-color: #1e3c72;
+    box-shadow: 0 0 0 0.2rem rgba(30,60,114,0.25);
+}
+
+.btn {
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to right, #2a5298, #1e3c72);
+}
+
+.btn-warning {
+    background: #f0ad4e;
+    border: none;
+    color: white;
+}
+
+.btn-danger {
+    background: #dc3545;
+    border: none;
+}
+
+hr {
+    border-color: #eee;
+    margin: 2rem 0;
+} 
