@@ -915,12 +915,3 @@ body, html {
 .footer .social-links a:hover {
     color: #007bff;
 }
-
-.footer .kelompok {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    background-color: #333;
-    text-align: center;
-    color: #fff;
-}

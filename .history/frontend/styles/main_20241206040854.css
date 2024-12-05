@@ -889,16 +889,15 @@ body, html {
     justify-content: center;
     align-items: center;
 }
-.footer .container p {
-    text-align: center;
+.footer .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .footer .social-links {
     list-style: none;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .footer .social-links li {
@@ -914,13 +913,4 @@ body, html {
 
 .footer .social-links a:hover {
     color: #007bff;
-}
-
-.footer .kelompok {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    background-color: #333;
-    text-align: center;
-    color: #fff;
 }
