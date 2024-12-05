@@ -46,7 +46,7 @@ app.controller('ArticleController', function($scope, $http, $window) {
         
         var params = {
             page: $scope.currentPage,
-            limit: 6
+            limit: 10
         };
 
         if ($scope.filter.category) {
@@ -117,14 +117,9 @@ app.controller('ArticleController', function($scope, $http, $window) {
     };
 
     $scope.filterByCategory = function(category) {
-        if (category) {
-            $http.get('/api/articles?category=' + category)
-                .then(function(response) {
-                    $scope.articles = response.data;
-                });
-        } else {
-            $scope.loadArticles();
-        }
+        $scope.filter.category = category;
+        $scope.currentPage = 1;
+        $scope.loadArticles();
     };
 
     $scope.readMore = function(article) {
@@ -133,16 +128,4 @@ app.controller('ArticleController', function($scope, $http, $window) {
 
     // Load articles pertama kali
     $scope.loadArticles();  
-});
-
-app.run(function($rootScope) {
-    $rootScope.user = JSON.parse(localStorage.getItem('user')) || null;
-    
-    $rootScope.isLoggedIn = function() {
-        return !!localStorage.getItem('token');
-    };
-    
-    $rootScope.isAdmin = function() {
-        return $rootScope.user && $rootScope.user.role === 'admin';
-    };
-});
+}); 
