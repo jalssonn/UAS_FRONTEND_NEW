@@ -104,16 +104,24 @@ app.controller('ArticleController', function($scope, $http, $window) {
         return pages;
     };
 
+    $scope.user = JSON.parse(localStorage.getItem('user')) || null;
+    
     $scope.isLoggedIn = function() {
-        return localStorage.getItem('token') !== null;
+        return $scope.user !== null;
     };
 
-    $scope.username = JSON.parse(localStorage.getItem('user'))?.username || '';
+    $scope.isAdmin = function() {
+        return $scope.user && $scope.user.role === 'admin';
+    };
 
     $scope.logout = function() {
-        localStorage.removeItem('token');
+        // Hapus data user dari localStorage
         localStorage.removeItem('user');
-        $window.location.reload();
+        localStorage.removeItem('token');
+        $scope.user = null;
+        
+        // Redirect ke halaman login
+        $window.location.href = 'login.html';
     };
 
     $scope.filterByCategory = function(category) {
@@ -128,4 +136,5 @@ app.controller('ArticleController', function($scope, $http, $window) {
 
     // Load articles pertama kali
     $scope.loadArticles();  
-}); 
+});
+
