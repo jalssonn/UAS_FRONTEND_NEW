@@ -35,13 +35,21 @@ exports.getArticle = async (req, res) => {
         const article = await Article.findOne({
             _id: req.params.id,
             status: 'published'
-        }).populate('author', 'username');
+        })
+        .populate('author', 'username')
+        .populate('comments.user', 'username');
         
         if (!article) {
             return res.status(404).json({ message: 'Artikel tidak ditemukan' });
         }
         
-        res.json(article);
+        // Tambahkan informasi hasLiked jika user terautentikasi
+        const response = article.toObject();
+        if (req.user) {
+            response.hasLiked = article.likes.includes(req.user.userId);
+        }
+        
+        res.json(response);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

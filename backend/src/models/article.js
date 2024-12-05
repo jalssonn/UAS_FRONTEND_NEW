@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const articleSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -33,7 +34,11 @@ const articleSchema = new mongoose.Schema({
         type: String,
         enum: ['draft', 'published'],
         default: 'draft'
-    }
+    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 }, {
     timestamps: true
 });

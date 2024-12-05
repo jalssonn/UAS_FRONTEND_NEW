@@ -23,7 +23,7 @@ app.controller('DashboardController', function($scope, $window) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         localStorage.removeItem('userId');
-        $window.location.href = '../login.html';
+        $window.location.href = '../index.html';
     };
 });
 

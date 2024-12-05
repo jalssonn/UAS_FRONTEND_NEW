@@ -58,6 +58,16 @@
 
                 <div class="article-text">{{article.content}}</div>
 
+                <!-- Tambahkan setelah article-text dan sebelum share-buttons -->
+                <div class="article-interactions">
+                    <!-- Like Button -->
+                    <button class="like-button" ng-click="toggleLike()" ng-class="{'liked': hasLiked}">
+                        <i class="fas" ng-class="{'fa-heart': hasLiked, 'fa-heart-o': !hasLiked}"></i>
+                        <span>{{likes}} Suka</span>
+                    </button>
+
+                    
+
                 <!-- Share Buttons -->
                 <div class="share-buttons">
                     <a href="#" class="share-button share-facebook">
@@ -72,24 +82,6 @@
                 </div>
             </div>
 
-            <!-- Related Posts -->
-            <div class="related-posts">
-                <h2 class="related-posts-title">Artikel Terkait</h2>
-                <div class="related-posts-grid">
-                    <div class="related-post-card" ng-repeat="related in relatedArticles">
-                        <img ng-src="{{related.image}}" alt="{{related.title}}" class="related-post-image">
-                        <div class="related-post-content">
-                            <h3 class="related-post-title">{{related.title}}</h3>
-                            <p class="related-post-excerpt">{{related.content | truncate:100}}</p>
-                            <a href="article-detail.html?id={{related._id}}" class="nav-button">
-                                Baca Selengkapnya
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="article-detail-text">
-                </div>
-            </div>
         </div>
     </div>
     <script src="script.js"></script>

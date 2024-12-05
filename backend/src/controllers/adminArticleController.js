@@ -21,12 +21,12 @@ const upload = multer({
         }
         cb(null, true);
     }
-}).single('image');
+});
 
 // Create Article
 exports.createArticle = async (req, res) => {
     try {
-        upload(req, res, async function(err) {
+        upload.single('image')(req, res, async function(err) {
             if (err) {
                 return res.status(400).json({ message: err.message });
             }
@@ -84,27 +84,33 @@ exports.getAllArticles = async (req, res) => {
 // Update Article
 exports.updateArticle = async (req, res) => {
     try {
-        upload(req, res, async function(err) {
+        const { title, content, category, country, status } = req.body;
+        
+        // Pastikan likes adalah array yang valid
+        let updateData = {
+            title,
+            content, 
+            category,
+            country,
+            status
+        };
+
+        // Jika ada file gambar baru
+        upload.single('image')(req, res, async function(err) {
             if (err) {
                 return res.status(400).json({ message: err.message });
             }
 
-            const updateData = { ...req.body };
-            
-            // Jika ada file gambar baru
             if (req.file) {
                 updateData.image = `/uploads/articles/${req.file.filename}`;
             }
-
-            // Gunakan userId dari token
-            updateData.author = req.user.userId;
 
             const article = await Article.findByIdAndUpdate(
                 req.params.id,
                 updateData,
                 { new: true, runValidators: true }
-            ).populate('author', 'username');
-            
+            );
+
             if (!article) {
                 return res.status(404).json({ message: 'Artikel tidak ditemukan' });
             }

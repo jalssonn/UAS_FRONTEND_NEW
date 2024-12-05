@@ -24,19 +24,14 @@ app.controller('ArticleController', function($scope, $http, $window) {
 
     // Load articles
     $scope.loadArticles = function() {
-        var params = {};
-        if ($scope.filter && $scope.filter.status) {
-            params.status = $scope.filter.status;
-        }
-        
-        $http.get('http://localhost:5000/api/admin/articles', { params: params })
+        $http.get('http://localhost:5000/api/admin/articles')
             .then(function(response) {
                 $scope.articles = response.data.articles || [];
-                console.log('Articles loaded:', $scope.articles);
+                console.log('Articles reloaded:', $scope.articles);
             })
             .catch(function(error) {
-                alert('Gagal memuat artikel');
                 console.error('Error loading articles:', error);
+                alert('Gagal memuat artikel');
             });
     };
 
@@ -50,9 +45,17 @@ app.controller('ArticleController', function($scope, $http, $window) {
     // Edit article
     $scope.editArticle = function(article) {
         $scope.editMode = true;
-        const { description, ...articleWithoutDesc } = article;
-        $scope.formData = { ...articleWithoutDesc };
+        $scope.formData = {
+            _id: article._id,
+            title: article.title,
+            content: article.content,
+            category: article.category,
+            country: article.country,
+            status: article.status,
+            author: article.author
+        };
         $scope.showForm = true;
+        console.log('Editing article:', $scope.formData);
     };
 
     // Cancel form
@@ -70,53 +73,103 @@ app.controller('ArticleController', function($scope, $http, $window) {
     // Save article
     $scope.saveArticle = function() {
         $scope.loading = true;
-        var formData = new FormData();
         
         try {
-            // Ambil userId dari localStorage
-            const userId = localStorage.getItem('userId');
+            console.log('Form Data sebelum dikirim:', $scope.formData);
             
-            if (!userId) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const token = localStorage.getItem('token');
+            
+            if (!user || !token) {
                 alert('Anda harus login terlebih dahulu');
                 $scope.loading = false;
                 return;
             }
 
-            // Append semua data form
-            for (var key in $scope.formData) {
-                if (key === 'image' && $scope.formData[key] instanceof File) {
-                    formData.append('image', $scope.formData[key]);
-                } else if (key !== '_id') {
-                    formData.append(key, $scope.formData[key]);
+            // Untuk update artikel, kirim data langsung tanpa FormData
+            if ($scope.editMode) {
+                const updateData = {
+                    title: $scope.formData.title,
+                    content: $scope.formData.content,
+                    category: $scope.formData.category,
+                    country: $scope.formData.country,
+                    status: $scope.formData.status,
+                    author: user.id
+                };
+
+                console.log('Update data:', updateData);
+
+                $http({
+                    method: 'PUT',
+                    url: 'http://localhost:5000/api/admin/articles/' + $scope.formData._id,
+                    data: updateData,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
+                .then(function(response) {
+                    console.log('Response update:', response.data);
+                    if (response.data) {
+                        alert('Artikel berhasil diupdate');
+                        $scope.loadArticles();
+                        $scope.cancelForm();
+                    } else {
+                        throw new Error('Gagal mengupdate artikel');
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error update:', error);
+                    alert('Gagal mengupdate artikel: ' + (error.response?.data?.message || error.message));
+                })
+                .finally(function() {
+                    $scope.loading = false;
+                });
+            } else {
+                // Untuk artikel baru, gunakan FormData karena ada upload gambar
+                var formData = new FormData();
+                formData.append('title', $scope.formData.title);
+                formData.append('content', $scope.formData.content);
+                formData.append('category', $scope.formData.category);
+                formData.append('country', $scope.formData.country);
+                formData.append('status', $scope.formData.status);
+                formData.append('author', user.id);
+
+                if ($scope.formData.image instanceof File) {
+                    formData.append('image', $scope.formData.image);
                 }
+
+                $http({
+                    method: 'POST',
+                    url: 'http://localhost:5000/api/admin/articles',
+                    data: formData,
+                    headers: {
+                        'Content-Type': undefined,
+                        'Authorization': 'Bearer ' + token
+                    },
+                    transformRequest: angular.identity
+                })
+                .then(function(response) {
+                    console.log('Response create:', response.data);
+                    if (response.data) {
+                        alert('Artikel berhasil ditambahkan');
+                        $scope.loadArticles();
+                        $scope.cancelForm();
+                    } else {
+                        throw new Error('Gagal menambahkan artikel');
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error create:', error);
+                    alert('Gagal menambahkan artikel: ' + (error.response?.data?.message || error.message));
+                })
+                .finally(function() {
+                    $scope.loading = false;
+                });
             }
-
-            // Append author ID
-            formData.append('author', userId); // userId harus berupa string 24 karakter hex
-
-            $http({
-                method: $scope.editMode ? 'PUT' : 'POST',
-                url: 'http://localhost:5000/api/admin/articles' + ($scope.editMode ? '/' + $scope.formData._id : ''),
-                data: formData,
-                headers: {
-                    'Content-Type': undefined
-                },
-                transformRequest: angular.identity
-            })
-            .then(function(response) {
-                alert($scope.editMode ? 'Artikel berhasil diupdate' : 'Artikel berhasil ditambahkan');
-                $scope.loadArticles();
-                $scope.cancelForm();
-            })
-            .catch(function(error) {
-                console.error('Error detail:', error);
-                alert('Gagal menyimpan artikel: ' + (error.data?.message || 'Terjadi kesalahan'));
-            })
-            .finally(function() {
-                $scope.loading = false;
-            });
         } catch(error) {
             console.error('Error:', error);
+            alert('Terjadi kesalahan: ' + error.message);
             $scope.loading = false;
         }
     };

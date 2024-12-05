@@ -13,6 +13,7 @@ const { errorHandler, notFound } = require('./src/middleware/errorHandler');
 const articlesRouter = require('./src/routes/articles');
 const articleController = require('./src/controllers/articleController');
 const userRouter = require('./src/routes/user');
+const interactionRoutes = require('./src/routes/interaction');
 // Initialize express
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/api/users', userRouter);
 app.use('/api/admin', require('./src/routes/admin'));
 app.get('/api/articles', articleController.getPublicArticles);
 app.use('/api/articles', articlesRouter);
+app.use('/api', interactionRoutes);
 
 // HTML routes
 app.get('/', (req, res) => {

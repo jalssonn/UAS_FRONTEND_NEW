@@ -40,10 +40,17 @@
         </nav>
 
 
-                <!-- Hero Section -->
+                <!-- Hero Section dengan Carousel Background -->
                 <div class="hero-section">
+                    <div class="carousel-background" 
+                         ng-repeat="image in backgroundImages"
+                         ng-style="{'background-image': 'url(' + image + ')'}"
+                         ng-class="{'active': $index === currentBackgroundIndex, 'prev': $index === prevBackgroundIndex}">
+                        <div class="overlay"></div>
+                    </div>
+                    
                     <div class="hero-content">
-                        <h1>Jelajahi Artikel Wisata</h1>
+                        <h1>WorldExplorer</h1>
                         <p>Temukan destinasi wisata impian Anda dari berbagai penjuru dunia</p>
                         
                         <!-- Search Box -->
@@ -63,7 +70,56 @@
                         </div>
                     </div>
                 </div>
+                 <!-- Tambahkan Why AVIATOUR Section di sini -->
+        <div class="why-aviatour-section">
+            <h2 class="section-title">Why WorldExplorer</h2>
+            
+            <div class="features-container">
+                <!-- Feature 1 -->
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <h3>Penyedia Perjalanan Terbaik</h3>
+                        <p>Kami berkomitmen menjadikan setiap liburan Anda penuh cerita berharga. Dengan perhatian penuh padapada memori dan pengalaman Anda, kami memastikan setiap langkah liburan Anda berjalan mulus dan penuh kebahagiaan.</p>
+                    </div>
+                    <div class="feature-image">
+                        <img src="images/feature-1.jpg" alt="Penyedia Perjalanan Terbaik">
+                    </div>
+                </div>
 
+                <!-- Feature 2 -->
+                <div class="feature-item reverse">
+                    <div class="feature-content">
+                        <h3>Layanan Agen Berpengalaman</h3>
+                        <p>Dengan jam terbang yang tinggi, tim kami siap memberikan solusi terbaik untuk setiap kebutuhan Anda. Kepuasan pelanggan adalah prioritas kami, terbukti dari banyaknya pelanggan yang terus kembali setelah menggunakan jasa kami.</p>
+                    </div>
+                    <div class="feature-image">
+                        <img src="images/feature-2.jpg" alt="Layanan Agen Berpengalaman">
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <h3>Pelayanan Premium dan Personal</h3>
+                        <p>Rasakan perbedaan dengan pelayanan terbaik dan personal yang kami tawarkan! Kami mengutamakan kebutuhan unik setiap pelanggan untuk memastikan setiap pengalaman Anda selama perjalanan terasa istimewa.</p>
+                    </div>
+                    <div class="feature-image">
+                        <img src="images/feature-3.jpg" alt="Pelayanan Premium">
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-item reverse">
+                    <div class="feature-content">
+                        <h3>Nikmati Liburan Tanpa Beban</h3>
+                        <p>Rasakan kebebasan sejati saat berlibur! Dengan pelayanan menyeluruh di setiap aspek, Anda tidak perlu repot mengurus berbagai hal. Biarkan kami yang menangani semua detail, sehingga Anda bisa fokus menikmati setiap momen berharga.</p>
+                    </div>
+                    <div class="feature-image">
+                        <img src="images/feature-4.jpg" alt="Liburan Tanpa Beban">
+                    </div>
+                </div>
+            </div>
+        </div>
                 <!-- Loading State -->
                 <div ng-if="loading" class="loading-spinner">
                     <i class="fas fa-spinner fa-spin fa-2x"></i>
@@ -75,8 +131,35 @@
                     <i class="fas fa-exclamation-circle me-2"></i>{{error}}
                 </div>
 
-                <!-- Tambahkan section judul di atas filter -->
-                <div class="filter-title-section">
+                <!-- Travel Tips Section -->
+                <div class="travel-tips-section">
+                    <div class="section-header">
+                        <h2>Travel Tips</h2>
+                        <p>Kiat-kiat perjalanan untuk pengalaman wisata yang lebih baik</p>
+                    </div>
+                    
+                    <!-- Tombol navigasi khusus untuk travel tips -->
+                    <button class="travel-nav-btn prev" ng-click="prevTip()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="travel-nav-btn next" ng-click="nextTip()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    
+                    <div class="travel-tips-container">
+                        <div class="tip-card" ng-repeat="tip in travelTips">
+                            <img ng-src="{{tip.image}}" alt="{{tip.title}}">
+                            <div class="tip-content">
+                                <h3 class="tip-title">{{tip.title}}</h3>
+                                <a href="{{tip.link}}" class="tip-link">
+                                    SEE MORE <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <!-- Tambahkan section judul di atas filter -->
+                  <div class="filter-title-section">
                     <h2>Artikel Wisata</h2>
                     <p>Temukan artikel menarik sesuai kategori yang Anda inginkan</p>
                 </div>
@@ -97,7 +180,6 @@
                         </button>
                     </div>
                 </div>
-
                 <!-- Articles List -->
                 <div class="article-container">
                     <div class="article-card" ng-repeat="article in articles">
@@ -120,20 +202,12 @@
                     </div>
                 </div>
 
-                <!-- Pagination -->
-                <nav ng-if="totalPages > 1">
-                    <ul class="pagination">
-                        <li class="page-item" ng-class="{disabled: currentPage === 1}">
-                            <a class="page-link" href="#" ng-click="changePage(currentPage - 1)">Previous</a>
-                        </li>
-                        <li class="page-item" ng-repeat="page in getPages()" ng-class="{active: page === currentPage}">
-                            <a class="page-link" href="#" ng-click="changePage(page)">{{page}}</a>
-                        </li>
-                        <li class="page-item" ng-class="{disabled: currentPage === totalPages}">
-                            <a class="page-link" href="#" ng-click="changePage(currentPage + 1)">Next</a>
-                        </li>
-                    </ul>
-                </nav>
+                <!-- Ganti bagian pagination dengan tombol View More -->
+                <div class="view-more-container" ng-if="articles.length > 0">
+                    <button class="view-more-btn" ng-click="viewAllArticles()">
+                        View More Articles <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
