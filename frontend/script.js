@@ -131,33 +131,28 @@ app.controller('ArticleController', function($scope, $http, $window, $interval) 
 
     $scope.travelTips = [
         {
-            image: '/images/japan.jpg',
-            title: 'FANTASTIC JAPAN TRIP SPECIAL',
+            image: '/images/jepang.jpg',
+            title: 'japan trip tips',
             link: '/tours/japan'
         },
         {
-            image: '/images/europe.jpg',
-            title: 'EUROPE TRIP',
-            link: '/tours/europe'
+            image: '/images/malaysia.jpg',
+            title: 'malaysia trip tips',
+            link: '/tours/malaysia'
         },
         {
-            image: '/images/australia.jpg',
-            title: 'AUSTRALIA FUN TRIP',
-            link: '/tours/australia'
+            image: '/images/singapore.jpg',
+            title: 'singapore trip tips',
+            link: '/tours/singapore'
         },
         {
-            image: '/images/korea.jpg',
-            title: 'SOUTH KOREA BEAUTIFUL TRIP',
-            link: '/tours/korea'
-        },
-        {
-            image: '/images/korea.jpg',
-            title: 'SOUTH KOREA BEAUTIFUL TRIP',
-            link: '/tours/korea'
+            image: '/images/thailand.jpg',
+            title: 'thailand trip tips',
+            link: '/tours/thailand'
         },
         {
             image: '/images/korea.jpg',
-            title: 'SOUTH KOREA BEAUTIFUL TRIP',
+            title: 'korea trip tips',
             link: '/tours/korea'
         },
 
